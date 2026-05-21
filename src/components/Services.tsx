@@ -65,7 +65,7 @@ export default function Services() {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.filter(s => s.isActive !== false).map((service, index) => {
+          {services.filter((s: any) => s.isActive !== false).map((service: any, index) => {
             const Icon = iconMap[service.icon] || FaHandHoldingHeart;
             const serviceData = service.title ? service : service[language];
             const title = service.title?.[language] || service[language]?.title || 'Service';
