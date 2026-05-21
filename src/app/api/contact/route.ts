@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       const { fullName, email, phone, message } = validation.data;
 
       // Get client info
-      const ipAddress = req.headers.get('x-forwarded-for') || req.ip || 'unknown';
+      const ipAddress = req.headers.get('x-forwarded-for') || 'unknown';
       const userAgent = req.headers.get('user-agent') || 'unknown';
 
       // Create contact message
