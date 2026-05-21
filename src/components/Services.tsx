@@ -4,8 +4,24 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { initialWebsiteData } from '@/data/websiteData';
 import { FaHandHoldingHeart, FaClock, FaUsers, FaAward } from 'react-icons/fa';
+import type { IconType } from 'react-icons';
 
-const iconMap: { [key: string]: any } = {
+type Language = 'en' | 'ku' | 'ar';
+
+type Translation = {
+  title: string;
+  description: string;
+};
+
+type Service = {
+  id: string | number;
+  icon: string;
+  isActive?: boolean;
+  title?: Record<Language, string>;
+  description?: Record<Language, string>;
+} & Record<Language, Translation>;
+
+const iconMap: Record<string, IconType> = {
   FaHandHoldingHeart,
   FaClock,
   FaUsers,
@@ -14,7 +30,9 @@ const iconMap: { [key: string]: any } = {
 
 export default function Services() {
   const { language, t } = useLanguage();
-  const [services, setServices] = useState(initialWebsiteData.services);
+  const [services, setServices] = useState<Service[]>(
+    initialWebsiteData.services as Service[]
+  );
 
   useEffect(() => {
     // Load from localStorage
@@ -23,7 +41,7 @@ export default function Services() {
       try {
         const content = JSON.parse(saved);
         if (content.services && content.services.length > 0) {
-          setServices(content.services);
+          setServices(content.services as Service[]);
         }
       } catch (e) {
         console.error('Failed to load services:', e);
@@ -35,9 +53,9 @@ export default function Services() {
       const saved = localStorage.getItem('websiteContent');
       if (saved) {
         try {
-          const content = JSON.parse(saved);
-          if (content.services) {
-            setServices(content.services);
+        const content = JSON.parse(saved);
+        if (content.services) {
+            setServices(content.services as Service[]);
           }
         } catch (e) {
           console.error('Failed to load services:', e);
@@ -65,9 +83,8 @@ export default function Services() {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.filter((s: any) => s.isActive !== false).map((service: any, index) => {
+          {services.filter((service) => service.isActive !== false).map((service, index) => {
             const Icon = iconMap[service.icon] || FaHandHoldingHeart;
-            const serviceData = service.title ? service : service[language];
             const title = service.title?.[language] || service[language]?.title || 'Service';
             const description = service.description?.[language] || service[language]?.description || '';
             
