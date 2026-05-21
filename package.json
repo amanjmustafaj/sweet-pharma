@@ -1,0 +1,49 @@
+{
+  "name": "sweet-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:init": "tsx src/lib/initDB.ts",
+    "db:seed": "tsx src/lib/initDB.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.0.0",
+    "cookie": "^1.1.1",
+    "csrf": "^3.1.0",
+    "express-rate-limit": "^7.0.0",
+    "framer-motion": "^11.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^5.0.0",
+    "next": "^16.2.6",
+    "next-auth": "^4.24.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-hot-toast": "^2.4.0",
+    "react-icons": "^5.0.0",
+    "react-swipeable": "^7.0.0",
+    "swiper": "^12.1.4",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie": "^0.6.0",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^16.2.6",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}
