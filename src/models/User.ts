@@ -90,7 +90,8 @@ userSchema.methods.comparePassword = async function (
 // Prevent password from being returned in JSON
 userSchema.set('toJSON', {
   transform: function (doc, ret) {
-    delete ret.password;
+    const user = ret as Partial<IUser>;
+    delete user.password;
     return ret;
   },
 });

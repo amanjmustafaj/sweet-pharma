@@ -66,12 +66,3 @@ export async function POST(request: NextRequest) {
     });
   });
 }
-
-// Maximum file size: 5MB per image
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '5mb',
-    },
-  },
-};

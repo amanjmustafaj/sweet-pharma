@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET is not defined in environment variables');
+  if (!secret) {
+    throw new Error('JWT_SECRET is not defined in environment variables');
+  }
+
+  return secret;
 }
 
 export interface AuthUser {
@@ -20,7 +24,7 @@ export interface AuthUser {
  */
 export function verifyToken(token: string): AuthUser | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;
+    const decoded = jwt.verify(token, getJwtSecret()) as AuthUser;
     return decoded;
   } catch (error) {
     return null;
@@ -31,7 +35,7 @@ export function verifyToken(token: string): AuthUser | null {
  * Generate JWT token for user
  */
 export function generateToken(user: AuthUser): string {
-  return jwt.sign(user, JWT_SECRET, {
+  return jwt.sign(user, getJwtSecret(), {
     expiresIn: '7d', // Token expires in 7 days
   });
 }
@@ -43,7 +47,7 @@ export async function requireAuth(
   request: NextRequest,
   handler: (request: NextRequest, user: AuthUser) => Promise<NextResponse>
 ): Promise<NextResponse> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
   if (!token) {
@@ -115,8 +119,8 @@ export function clearAuthCookie(response: NextResponse): NextResponse {
 /**
  * Get current authenticated user from request
  */
-export function getCurrentUser(request: NextRequest): AuthUser | null {
-  const cookieStore = cookies();
+export async function getCurrentUser(request: NextRequest): Promise<AuthUser | null> {
+  const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
 
   if (!token) {

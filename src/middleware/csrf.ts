@@ -60,7 +60,7 @@ export async function csrfProtection(
     return handler(request);
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const csrfCookie = cookieStore.get('csrf_token')?.value;
   const csrfHeader = request.headers.get('x-csrf-token');
 
@@ -84,26 +84,27 @@ export async function csrfProtection(
 /**
  * Get CSRF token from cookie (for client-side)
  */
-export function getCsrfToken(): string | undefined {
-  const cookieStore = cookies();
+export async function getCsrfToken(): Promise<string | undefined> {
+  const cookieStore = await cookies();
   return cookieStore.get('csrf_token')?.value;
 }
 
 /**
  * Middleware to ensure CSRF token exists
  */
-export function ensureCsrfToken(
+export async function ensureCsrfToken(
   request: NextRequest,
   handler: (request: NextRequest) => Promise<NextResponse>
 ): Promise<NextResponse> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const csrfCookie = cookieStore.get('csrf_token')?.value;
 
-  return handler(request).then((response) => {
-    // If no CSRF token exists, set one
-    if (!csrfCookie) {
-      return setCsrfCookie(response);
-    }
-    return response;
-  });
+  const response = await handler(request);
+
+  // If no CSRF token exists, set one
+  if (!csrfCookie) {
+    return setCsrfCookie(response);
+  }
+
+  return response;
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import ContactMessage from '@/models/ContactMessage';
 import { strictRateLimit } from '@/middleware/rateLimit';
+import { requireAuth } from '@/middleware/auth';
 import { z } from 'zod';
 
 // Validation schema
@@ -119,5 +120,3 @@ export async function GET(request: NextRequest) {
     }
   });
 }
-
-import { requireAuth } from '@/middleware/auth';

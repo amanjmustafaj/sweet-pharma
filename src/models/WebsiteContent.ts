@@ -22,7 +22,7 @@ interface IService {
   isActive: boolean;
 }
 
-interface Branch {
+interface IBranch {
   id: string;
   title: { en: string; ku: string; ar: string };
   address: { en: string; ku: string; ar: string };
